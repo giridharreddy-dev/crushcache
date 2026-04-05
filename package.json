@@ -1,0 +1,12 @@
+{
+  "name": "love-meter",
+  "version": "1.0.0",
+  "description": "Cosmic love calculator with serverless backend",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build step required'"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

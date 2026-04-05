@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <!-- Open Graph / WhatsApp Preview -->
+  <meta property="og:title" content="💖 Cosmic Love Meter | How Much Does Your Crush Love You?">
+  <meta property="og:description" content="Enter your name and your crush's name to discover your true flame connection. Get a magical love percentage based on FLAMES + cosmic energy!">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518199266791-5375a83190f8?w=1200&h=630&fit=crop">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://your-domain.com">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>💖 Cosmic Love Meter | True Flame Connection 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #ffdde1 0%, #f9c9e2 40%, #ffb7c5 100%);
+      font-family: 'Inter', sans-serif;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    body::before {
+      content: "❤️💖💗💓💕";
+      position: absolute;
+      font-size: 22px;
+      white-space: nowrap;
+      top: 10%;
+      left: -10%;
+      animation: floatHearts 18s linear infinite;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    @keyframes floatHearts {
+      0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.2; }
+      100% { transform: translateX(120vw) translateY(-40vh) rotate(360deg); opacity: 0.5; }
+    }
+    .glass-card {
+      max-width: 560px;
+      width: 100%;
+      background: rgba(255, 248, 245, 0.92);
+      backdrop-filter: blur(12px);
+      border-radius: 52px;
+      box-shadow: 0 25px 45px rgba(255, 80, 120, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      padding: 2rem 1.8rem 2.5rem;
+      transition: all 0.2s ease;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #C33764, #B22234);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .sub {
+      text-align: center;
+      color: #a13e5c;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      border-bottom: 2px dotted #ffb3c6;
+      display: inline-block;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+      padding-bottom: 6px;
+      font-size: 0.95rem;
+    }
+    .input-group {
+      margin-bottom: 1.6rem;
+    }
+    label {
+      font-weight: 600;
+      color: #a13452;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    input {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 1rem;
+      background: white;
+      border: 1.5px solid #ffc0d0;
+      border-radius: 60px;
+      outline: none;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+    input:focus {
+      border-color: #e85d8f;
+      box-shadow: 0 0 0 3px rgba(232, 93, 143, 0.2);
+    }
+    button {
+      width: 100%;
+      background: linear-gradient(95deg, #E85D8F, #C33764);
+      border: none;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 6px 14px rgba(195, 55, 100, 0.3);
+    }
+    button:hover {
+      transform: scale(0.98);
+      background: linear-gradient(95deg, #d64c7c, #b12b58);
+    }
+    .result-card {
+      margin-top: 2rem;
+      background: #fff0f3ee;
+      border-radius: 40px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      transition: all 0.3s;
+      border: 1px solid #ffe2ea;
+    }
+    .percentage {
+      font-size: 3.3rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #b92b5c, #e65c87);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      display: inline-block;
+      margin: 10px 0 5px;
+    }
+    .flame-badge {
+      background: #ffd9e4;
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #b34166;
+      margin-top: 8px;
+    }
+    .message {
+      font-weight: 500;
+      color: #5f2e41;
+      margin: 15px 0 5px;
+      font-size: 1rem;
+    }
+    .progress-bar {
+      background: #ffcddb;
+      border-radius: 40px;
+      height: 12px;
+      width: 100%;
+      margin: 15px 0 8px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, #f098b3, #e8436e);
+      width: 0%;
+      height: 100%;
+      border-radius: 40px;
+      transition: width 1s cubic-bezier(0.22, 0.97, 0.36, 1);
+    }
+    .share-btn {
+      background: #25D366;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 60px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      color: white;
+      text-align: center;
+    }
+    .share-btn:hover {
+      background: #128C7E;
+    }
+    .counter {
+      font-size: 0.9rem;
+      color: #b86f88;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .toast-msg {
+      background: #2e7d64e0;
+      color: white;
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: 20px;
+      padding: 8px;
+      border-radius: 60px;
+      opacity: 0;
+      transition: opacity 0.25s;
+      backdrop-filter: blur(4px);
+    }
+    footer {
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 1.6rem;
+      color: #b86f88;
+    }
+    #resetBtn {
+      background: none;
+      border: 1px solid #ffb3c6;
+      color: #b34166;
+      box-shadow: none;
+      padding: 8px 20px;
+      width: auto;
+      cursor: pointer;
+      border-radius: 60px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    #resetBtn:hover {
+      background: #ffe0e8;
+    }
+    @media (max-width: 480px) {
+      .glass-card { padding: 1.5rem; }
+      h1 { font-size: 1.8rem; }
+      .percentage { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="glass-card">
+  <h1>✨ Love Meter ✨</h1>
+  <div style="text-align: center;"><span class="sub">💘 How much does your crush adore you? 💘</span></div>
+
+  <div class="input-group">
+    <label>💖 Your name</label>
+    <input type="text" id="yourName" placeholder="e.g., Giri" autocomplete="off">
+  </div>
+  <div class="input-group">
+    <label>💗 Crush's name</label>
+    <input type="text" id="crushName" placeholder="e.g., Ananya" autocomplete="off">
+  </div>
+
+  <button id="calculateBtn">✨ Reveal the flame ✨</button>
+
+  <div id="resultArea" class="result-card" style="display: none;">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div><span class="percentage" id="percentageValue">0%</span></div>
+    <div class="flame-badge" id="flamesType">❤️‍🔥</div>
+    <div class="message" id="romanticMsg">✨ The stars are speaking... ✨</div>
+    <div id="personality" style="font-weight: bold; margin-top: 8px;"></div>
+    <div id="shareContainer" style="margin-top: 16px;"></div>
+  </div>
+
+  <div id="resetContainer" style="margin-top: 12px; text-align: center;">
+    <button id="resetBtn">💫 Try Again</button>
+  </div>
+  <div id="trending" class="counter" style="margin-top: 12px;">🔥 Trending now: Giri ❤️ Ananya = 92%</div>
+  <div id="notificationToast" class="toast-msg">✨ Love note saved in the universe ✨</div>
+  <div class="counter" id="totalCounter">🔥 Loading love count...</div>
+  <footer>🔮 based on ancient FLAMES & cosmic vibrations • pure heart meter</footer>
+</div>
+
+<script>
+  // ---------- FLAMES & Percentage Logic ----------
+  function computeFlamesCore(nameA, nameB) {
+    let cleanA = nameA.toLowerCase().replace(/[^a-z]/g, '');
+    let cleanB = nameB.toLowerCase().replace(/[^a-z]/g, '');
+    let arrA = cleanA.split('');
+    let arrB = cleanB.split('');
+    for (let i = 0; i < arrA.length; i++) {
+      let foundIndex = arrB.indexOf(arrA[i]);
+      if (foundIndex !== -1) {
+        arrA.splice(i, 1);
+        arrB.splice(foundIndex, 1);
+        i--;
+      }
+    }
+    let totalRemaining = arrA.length + arrB.length;
+    const flamesSeq = ['F', 'L', 'A', 'M', 'E', 'S'];
+    let seq = [...flamesSeq];
+    let pointer = 0;
+    while (seq.length > 1) {
+      pointer = (pointer + totalRemaining - 1) % seq.length;
+      seq.splice(pointer, 1);
+    }
+    const finalLetter = seq[0];
+    const flameMeaning = {
+      'F': 'Friendship', 'L': 'Love', 'A': 'Affection',
+      'M': 'Marriage', 'E': 'Enemy', 'S': 'Sibling'
+    };
+    return {
+      resultWord: flameMeaning[finalLetter] || 'Mystic Bond',
+      flameLetter: finalLetter,
+      remainingCount: totalRemaining
+    };
+  }
+
+  function getLovePercentage(name1, name2) {
+    if (!name1.trim() || !name2.trim()) return 0;
+    const flamesData = computeFlamesCore(name1, name2);
+    const { flameLetter, remainingCount } = flamesData;
+    const baseMap = { 'F':62, 'L':88, 'A':78, 'M':96, 'E':34, 'S':54 };
+    let basePercent = baseMap[flameLetter] || 70;
+    let combined = (name1 + name2).toLowerCase().replace(/\s/g, '');
+    let hash = 0;
+    for (let i = 0; i < combined.length; i++) {
+      hash = ((hash << 5) - hash) + combined.charCodeAt(i);
+      hash |= 0;
+    }
+    let variation = Math.abs(hash % 19) - 9;
+    let countMod = (remainingCount % 13) - 5;
+    let finalPercent = basePercent + variation + countMod;
+    finalPercent = Math.min(99, Math.max(12, finalPercent));
+    return Math.floor(finalPercent);
+  }
+
+  function getMessage(percent) {
+    if (percent >= 95) return "💞 Cosmic soulmates! The universe celebrates you both! 💞";
+    if (percent >= 85) return "🔥 Intense connection! True love blooming like wild roses. 🔥";
+    if (percent >= 70) return "💖 Strong heart vibes! This crush is absolutely real. 💖";
+    if (percent >= 55) return "🍀 Wonderful chemistry! The spark is definitely there. 🍀";
+    if (percent >= 40) return "🌼 Sweet affection! Give it a little time — magic grows. 🌼";
+    if (percent >= 25) return "🌙 A gentle bond. Your stars are learning to dance. 🌙";
+    return "✨ Mysterious vibes! Love works in mysterious ways. ✨";
+  }
+
+  function getPersonality(percent) {
+    if (percent >= 95) return "💞 DANGEROUSLY IN LOVE 💞";
+    if (percent >= 85) return "🔥 SOULMATE VIBES 🔥";
+    if (percent >= 70) return "💖 STRONG ATTRACTION 💖";
+    if (percent >= 55) return "🍀 CONFUSING SIGNALS 🍀";
+    if (percent >= 40) return "🌼 ONE-SIDED ENERGY 👀";
+    return "✨ COSMIC MYSTERY ✨";
+  }
+
+  // ---------- UI Helpers ----------
+  function showToastNotification(msg, duration = 2800) {
+    const toast = document.getElementById('notificationToast');
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, duration);
+  }
+
+  function saveLastResult(percent, flameWord, personality) {
+    localStorage.setItem('lastLoveResult', JSON.stringify({ percent, flameWord, personality, date: new Date().toISOString() }));
+  }
+
+  function displayLastResult() {
+    const last = localStorage.getItem('lastLoveResult');
+    if (last) {
+      const { percent, flameWord, personality } = JSON.parse(last);
+      showToastNotification(`💖 Your last love score: ${percent}% (${flameWord}) — ${personality}`, 5000);
+    }
+  }
+
+  function createGentleSparkles() {
+    const sparkleDiv = document.createElement('div');
+    sparkleDiv.style.position = 'fixed';
+    sparkleDiv.style.pointerEvents = 'none';
+    sparkleDiv.style.top = '50%';
+    sparkleDiv.style.left = '50%';
+    sparkleDiv.style.width = '100%';
+    sparkleDiv.style.height = '100%';
+    sparkleDiv.style.transform = 'translate(-50%, -50%)';
+    sparkleDiv.style.zIndex = '999';
+    sparkleDiv.style.background = 'radial-gradient(circle, rgba(255,200,220,0.4) 0%, rgba(255,180,200,0) 80%)';
+    sparkleDiv.style.animation = 'fadeOutSpark 1s forwards';
+    document.body.appendChild(sparkleDiv);
+    setTimeout(() => sparkleDiv.remove(), 1000);
+    const styleAnim = document.createElement('style');
+    styleAnim.textContent = `@keyframes fadeOutSpark { 0% { opacity: 0.7; } 100% { opacity: 0; visibility: hidden; } }`;
+    document.head.appendChild(styleAnim);
+    setTimeout(() => styleAnim.remove(), 1200);
+  }
+
+  function addShareButton(percent, yourName, crushName, personality) {
+    const shareContainer = document.getElementById('shareContainer');
+    shareContainer.innerHTML = '';
+    const shareBtn = document.createElement('div');
+    shareBtn.className = 'share-btn';
+    shareBtn.innerHTML = '📲 Share on WhatsApp';
+    const shareText = `${personality} 💖 ${yourName} ❤️ ${crushName} = ${percent}% Love!\n\nTry yours 👇\n${window.location.href}`;
+    shareBtn.onclick = () => {
+      window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
+    };
+    shareContainer.appendChild(shareBtn);
+  }
+
+  function resetUI() {
+    document.getElementById('yourName').value = '';
+    document.getElementById('crushName').value = '';
+    document.getElementById('resultArea').style.display = 'none';
+    document.getElementById('shareContainer').innerHTML = '';
+    showToastNotification('✨ Ready for another love test ✨', 2000);
+  }
+
+  // ---------- Backend Communication ----------
+  async function saveToDatabase(yourName, crushName, lovePercent, flameCategory) {
+    try {
+      const response = await fetch('/.netlify/functions/submit-love', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ yourName, crushName, lovePercent, flameCategory }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        document.getElementById('totalCounter').innerHTML = `🔥 ${data.total} love tests done 🔥`;
+      } else {
+        document.getElementById('totalCounter').innerHTML = `🔥 Love counter temporarily unavailable 🔥`;
+        if (response.status === 429 && data.error) {
+          showToastNotification(data.error, 4000);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to save:', err);
+      document.getElementById('totalCounter').innerHTML = `🔥 Love counter offline 🔥`;
+    }
+  }
+
+  // ---------- Main Calculation ----------
+  function calculateAndDisplay() {
+    let yourName = document.getElementById('yourName').value.trim();
+    let crushName = document.getElementById('crushName').value.trim();
+
+    const nameRegex = /^[a-zA-Z\u00C0-\u00FF\s]{2,20}$/;
+    if (!nameRegex.test(yourName) || !nameRegex.test(crushName)) {
+      showToastNotification('💘 Please enter real names (2–20 letters, no numbers) 💘', 3000);
+      return;
+    }
+
+    const lovePercent = getLovePercentage(yourName, crushName);
+    const flamesData = computeFlamesCore(yourName, crushName);
+    const flameCategory = flamesData.resultWord;
+    const personality = getPersonality(lovePercent);
+
+    // Update result UI
+    document.getElementById('percentageValue').innerText = `${lovePercent}%`;
+    document.getElementById('flamesType').innerHTML = `❤️‍🔥 ${flameCategory} Bond ❤️‍🔥`;
+    document.getElementById('romanticMsg').innerText = getMessage(lovePercent);
+    document.getElementById('personality').innerText = personality;
+
+    const progressFill = document.getElementById('progressFill');
+    progressFill.style.width = '0%';
+    setTimeout(() => { progressFill.style.width = `${lovePercent}%`; }, 40);
+
+    document.getElementById('resultArea').style.display = 'block';
+    document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    saveLastResult(lovePercent, flameCategory, personality);
+    addShareButton(lovePercent, yourName, crushName, personality);
+    saveToDatabase(yourName, crushName, lovePercent, flameCategory);
+
+    if (lovePercent >= 85) createGentleSparkles();
+  }
+
+  // ---------- Event Listeners ----------
+  document.getElementById('calculateBtn').addEventListener('click', calculateAndDisplay);
+  document.getElementById('resetBtn').addEventListener('click', resetUI);
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') calculateAndDisplay(); });
+  });
+
+  window.onload = () => {
+    displayLastResult();
+    document.getElementById('totalCounter').innerHTML = `🔥 Ready to measure love 🔥`;
+  };
+</script>
+</body>
+</html>
