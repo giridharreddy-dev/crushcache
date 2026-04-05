@@ -1,16 +1,17 @@
-// Native fetch (Node 18+) – no require('node-fetch')
+// netlify/functions/submit-love.js
+// Native fetch (Node 18+) – no external dependencies
 
 // Helper: normalize names
 function normalize(str) {
   return str.trim().toLowerCase();
 }
 
-// Helper: call Upstash Redis REST API using native fetch
+// Helper: call Upstash Redis REST API (optional – if Redis not configured, it will skip)
 async function redisCommand(cmd, ...args) {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) {
-    console.error('Redis env vars missing');
+    // Redis not configured – skip rate limiting
     return { result: null };
   }
   try {
@@ -46,7 +47,7 @@ exports.handler = async (event) => {
   const normCrush = normalize(crushName);
   const namesHash = `${normYour}|${normCrush}`;
 
-  // ----- Rate limiting (5 seconds) -----
+  // ----- Optional Redis rate limiting (5 seconds) -----
   const rateKey = `ratelimit:${ip}`;
   try {
     const lastReq = await redisCommand('GET', rateKey);
@@ -66,7 +67,7 @@ exports.handler = async (event) => {
     console.error('Rate limit error:', err);
   }
 
-  // ----- Duplicate prevention -----
+  // ----- Optional duplicate prevention (same names, same IP, 60 sec) -----
   const dupKey = `duplicate:${ip}:${namesHash}`;
   try {
     const existing = await redisCommand('GET', dupKey);
@@ -81,7 +82,7 @@ exports.handler = async (event) => {
     console.error('Duplicate check error:', err);
   }
 
-  // ----- Airtable -----
+  // ----- Airtable credentials -----
   const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
   const TABLE_NAME = process.env.TABLE_NAME || 'LoveTests';
@@ -89,13 +90,13 @@ exports.handler = async (event) => {
 
   if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) {
     console.error('Missing Airtable env vars');
-    return { statusCode: 500, body: 'Server config error' };
+    return { statusCode: 500, body: JSON.stringify({ error: 'Server config error: missing Airtable credentials' }) };
   }
 
   const timestamp = new Date().toLocaleString();
 
   try {
-    // 1. Add love record
+    // 1. Add love record – FIX: send lovePercent as number, not string with %
     const addRes = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(TABLE_NAME)}`, {
       method: 'POST',
       headers: {
@@ -107,20 +108,21 @@ exports.handler = async (event) => {
           fields: {
             'Your Name': yourName,
             'Crush\'s Name': crushName,
-            'Love Percentage': `${lovePercent}%`,
+            'Love Percentage': lovePercent,   // ✅ numeric value, no % sign
             'FLAMES Category': flameCategory,
             'Timestamp': timestamp,
           },
         }],
       }),
     });
+
     if (!addRes.ok) {
-      const err = await addRes.text();
-      console.error('Airtable add error:', err);
-      return { statusCode: 500, body: 'Failed to save to Airtable' };
+      const errText = await addRes.text();
+      console.error('Airtable add error:', errText);
+      return { statusCode: 500, body: JSON.stringify({ error: 'Failed to save to Airtable', details: errText }) };
     }
 
-    // 2. Update Stats table
+    // 2. Update Stats table (TotalSubmissions – no space)
     let newTotal = 1;
     try {
       const statsList = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${STATS_TABLE}`, {
@@ -130,6 +132,7 @@ exports.handler = async (event) => {
       let statsRecord = statsData.records?.[0];
 
       if (!statsRecord) {
+        // Create stats record
         const createRes = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${STATS_TABLE}`, {
           method: 'POST',
           headers: {
@@ -148,6 +151,8 @@ exports.handler = async (event) => {
         if (createRes.ok) {
           const createData = await createRes.json();
           newTotal = createData.records[0].fields.TotalSubmissions;
+        } else {
+          console.error('Failed to create stats record');
         }
       } else {
         const currentTotal = statsRecord.fields.TotalSubmissions || 0;
@@ -168,6 +173,7 @@ exports.handler = async (event) => {
       }
     } catch (statsErr) {
       console.error('Stats handling error:', statsErr);
+      // Continue anyway – total will be 1
     }
 
     return {
@@ -176,7 +182,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({ success: true, total: newTotal }),
     };
   } catch (err) {
-    console.error('Serverless function error:', err);
-    return { statusCode: 500, body: 'Internal server error' };
+    console.error('Unexpected error:', err);
+    return { statusCode: 500, body: JSON.stringify({ error: 'Internal server error', message: err.message }) };
   }
 };
