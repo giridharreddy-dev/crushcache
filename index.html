@@ -429,9 +429,9 @@
     let yourName = document.getElementById('yourName').value.trim();
     let crushName = document.getElementById('crushName').value.trim();
 
-    const nameRegex = /^[a-zA-Z\u00C0-\u00FF\s]{2,20}$/;
+    const nameRegex = /^[a-zA-Z\u00C0-\u00FF\s]{2,200}$/;
     if (!nameRegex.test(yourName) || !nameRegex.test(crushName)) {
-      showToastNotification('💘 Please enter real names (2–20 letters, no numbers) 💘', 3000);
+      showToastNotification('💘 Please enter real names (2–100 letters, no numbers) 💘', 3000);
       return;
     }
 
