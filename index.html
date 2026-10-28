@@ -403,6 +403,10 @@
 
   // ---------- Backend Communication ----------
   async function saveToDatabase(yourName, crushName, lovePercent, flameCategory) {
+    if (document.documentElement.dataset.hosting === 'browser-only') {
+      document.getElementById('totalCounter').textContent = 'Browser demo · no submissions collected';
+      return;
+    }
     try {
       const response = await fetch('/.netlify/functions/submit-love', {
         method: 'POST',
